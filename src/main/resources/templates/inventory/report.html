@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Stock Report</h1>
+    <a href="/inventory" class="btn">Back to Inventory</a>
+
+    <h2>Low Stock Items</h2>
+    <table th:if="${!lowStockItems.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Current Qty</th>
+            <th>Min Level</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${lowStockItems}">
+            <td th:text="${p.code}">-</td>
+            <td th:text="${p.name}">-</td>
+            <td th:text="${p.quantityInStock}">-</td>
+            <td th:text="${p.minStockLevel}">-</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${lowStockItems.isEmpty()}">No low stock items.</p>
+
+    <h2>All Products (Quantity)</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Min Level</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.code}">-</td>
+            <td th:text="${p.name}">-</td>
+            <td th:text="${p.category != null ? p.category.name : '-'}">-</td>
+            <td th:text="${p.quantityInStock}">-</td>
+            <td th:text="${p.minStockLevel}">-</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

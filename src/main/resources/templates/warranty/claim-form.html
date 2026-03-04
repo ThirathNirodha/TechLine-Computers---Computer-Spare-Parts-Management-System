@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>New Warranty Claim</h1>
+    <a href="/warranty/claims" class="btn">Back</a>
+
+    <form th:action="@{/warranty/claims/save}" th:object="${claim}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label>Service Ticket (optional)</label>
+            <select name="serviceTicketId">
+                <option value="">-- None --</option>
+                <option th:each="t : ${tickets}" th:value="${t.id}" th:text="'Ticket #' + t.id + ' - ' + (t.customer != null ? t.customer.name : '')" th:selected="${claim.serviceTicket != null && claim.serviceTicket.id == t.id}">Ticket</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Status</label>
+            <select th:field="*{status}">
+                <option th:value="SUBMITTED">Submitted</option>
+                <option th:value="UNDER_REVIEW">Under Review</option>
+                <option th:value="APPROVED">Approved</option>
+                <option th:value="REJECTED">Rejected</option>
+                <option th:value="RESOLVED">Resolved</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Notes</label>
+            <textarea th:field="*{notes}" rows="3" style="width: 400px;"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Documentation Ref</label>
+            <input type="text" th:field="*{documentationRef}" style="width: 300px;">
+        </div>
+        <button type="submit" class="btn">Save</button>
+    </form>
+</section>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Customers</h1>
+    <a href="/sales" class="btn">Back to Sales</a>
+    <a href="/sales/customers/new" class="btn">Add Customer</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${customers}">
+            <td th:text="${c.name}">-</td>
+            <td th:text="${c.email}">-</td>
+            <td th:text="${c.phone}">-</td>
+            <td>
+                <a th:href="@{/sales/customers/edit/{id}(id=${c.id})}" class="btn btn-small">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

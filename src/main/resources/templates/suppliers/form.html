@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1 th:text="${supplier.id != null ? 'Edit Supplier' : 'Add Supplier'}">Supplier</h1>
+    <a href="/suppliers" class="btn">Back</a>
+
+    <form th:action="@{/suppliers/save}" th:object="${supplier}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label>Contact Person</label>
+            <input type="text" th:field="*{contactPerson}">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" th:field="*{email}">
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" th:field="*{phone}">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <textarea th:field="*{address}" rows="2" style="width: 300px;"></textarea>
+        </div>
+        <button type="submit" class="btn">Save</button>
+    </form>
+</section>
+</body>
+</html>

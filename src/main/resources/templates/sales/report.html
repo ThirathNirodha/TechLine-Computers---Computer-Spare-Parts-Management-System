@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Daily Sales Report</h1>
+    <a href="/sales" class="btn">Back to Sales</a>
+
+    <form method="get" action="/sales/report" style="margin: 15px 0;">
+        <label>Date</label>
+        <input type="date" name="date" th:value="${reportDate != null ? #temporals.format(reportDate, 'yyyy-MM-dd') : #temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')}">
+        <button type="submit" class="btn">Show</button>
+    </form>
+
+    <p><strong>Total sales for date:</strong> <span th:text="${totalSales}">0</span></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Sale #</th>
+            <th>Time</th>
+            <th>Customer</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${sales}">
+            <td th:text="${s.id}">-</td>
+            <td th:text="${s.saleDate != null ? #temporals.format(s.saleDate, 'HH:mm') : '-'}">-</td>
+            <td th:text="${s.customer != null ? s.customer.name : 'Walk-in'}">-</td>
+            <td th:text="${s.totalAmount}">-</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

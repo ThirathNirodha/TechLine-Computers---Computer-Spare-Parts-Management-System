@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Payment History - <span th:text="${supplier.name}">Supplier</span></h1>
+    <a th:href="@{/suppliers/{id}/orders(id=${supplier.id})}" class="btn">Orders</a>
+    <a href="/suppliers" class="btn">Back to Suppliers</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Reference</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${payments}">
+            <td th:text="${p.paymentDate != null ? #temporals.format(p.paymentDate, 'yyyy-MM-dd') : '-'}">-</td>
+            <td th:text="${p.amount}">-</td>
+            <td th:text="${p.reference}">-</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(payments)}">No payments recorded.</p>
+</section>
+</body>
+</html>

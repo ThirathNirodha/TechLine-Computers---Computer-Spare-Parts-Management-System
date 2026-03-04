@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Inventory Management</h1>
+
+    <form method="get" action="/inventory" style="margin: 15px 0;">
+        <input type="text" name="search" th:value="${param.search}" placeholder="Search by name, code, specs">
+        <button type="submit" class="btn">Search</button>
+        <a href="/inventory" class="btn">Clear</a>
+        <a href="/inventory?lowStockOnly=true" class="btn">Low Stock Only</a>
+        <a href="/inventory/report" class="btn">Stock Report</a>
+        <a href="/inventory/categories" class="btn">Categories</a>
+        <a href="/inventory/new" class="btn">Add Product</a>
+    </form>
+
+    <p th:if="${frequentSearches != null && !frequentSearches.isEmpty()}">
+        <strong>Frequently searched:</strong>
+        <th:block th:each="term : ${frequentSearches}">
+            <a th:href="@{/inventory(search=${term})}" th:text="${term}">term</a><span th:unless="${termStat.last}">, </span>
+        </th:block>
+    </p>
+
+    <div th:if="${lowStockItems != null && !lowStockItems.isEmpty()}" style="background: #ffe0e0; padding: 10px; margin: 10px 0;">
+        <strong>Low stock alert:</strong> <span th:text="${#lists.size(lowStockItems)}">0</span> product(s) at or below minimum level.
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Min Stock</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.code}">-</td>
+            <td th:text="${p.name}">-</td>
+            <td th:text="${p.category != null ? p.category.name : '-'}">-</td>
+            <td th:text="${p.unitPrice}">-</td>
+            <td th:text="${p.quantityInStock}" th:style="${p.lowStock} ? 'color: red; font-weight: bold'">-</td>
+            <td th:text="${p.minStockLevel}">-</td>
+            <td>
+                <a th:href="@{/inventory/edit/{id}(id=${p.id})}" class="btn btn-small">Edit</a>
+                <form th:action="@{/inventory/delete/{id}(id=${p.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-small btn-danger" onclick="return confirm('Delete this product?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(products)}">No products found.</p>
+</section>
+</body>
+</html>

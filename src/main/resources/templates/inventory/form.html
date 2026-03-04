@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1 th:text="${product.id != null ? 'Edit Product' : 'Add Product'}">Product</h1>
+    <a href="/inventory" class="btn">Back</a>
+
+    <form th:action="@{/inventory/save}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label>Code</label>
+            <input type="text" th:field="*{code}" required>
+        </div>
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select name="categoryId" required>
+                <option value="">-- Select category --</option>
+                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}" th:selected="${product.category != null && product.category.id == c.id}">Category</option>
+            </select>
+            <span style="font-size: 0.85em; color: #666;">(RAM, SSD, Motherboard, CPU, GPU, PSU)</span>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea th:field="*{description}" rows="2" style="width: 300px;"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Unit Price (Rs.)</label>
+            <input type="number" th:field="*{unitPrice}" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label>Quantity in Stock</label>
+            <input type="number" th:field="*{quantityInStock}" required>
+        </div>
+        <div class="form-group">
+            <label>Min Stock Level</label>
+            <input type="number" th:field="*{minStockLevel}" required>
+        </div>
+        <div class="form-group">
+            <label>Warranty (months)</label>
+            <input type="number" th:field="*{warrantyMonths}">
+        </div>
+        <div class="form-group">
+            <label>Specifications</label>
+            <input type="text" th:field="*{specifications}" style="width: 400px;" placeholder="e.g. Socket AM4, DDR4">
+        </div>
+        <button type="submit" class="btn">Save</button>
+    </form>
+</section>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Warranty Claims</h1>
+    <a href="/warranty" class="btn">Back</a>
+    <a href="/warranty/claims/new" class="btn">New Claim</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${claims}">
+            <td th:text="${c.id}">-</td>
+            <td th:text="${c.claimDate != null ? #temporals.format(c.claimDate, 'yyyy-MM-dd') : '-'}">-</td>
+            <td th:text="${c.status}">-</td>
+            <td th:text="${#strings.abbreviate(c.notes, 30)}">-</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Product Categories</h1>
+    <a href="/inventory" class="btn">Back to Inventory</a>
+    <a href="/inventory/categories/new" class="btn">Add Category</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${categories}">
+            <td th:text="${c.name}">-</td>
+            <td th:text="${c.description}">-</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(categories)}">No categories. <a href="/inventory/categories/new">Add one</a> before adding products.</p>
+</section>
+</body>
+</html>

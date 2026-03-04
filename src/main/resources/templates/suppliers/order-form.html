@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>New Purchase Order</h1>
+    <a href="/suppliers" class="btn">Back</a>
+    <p th:if="${param.error}" class="alert">Please add at least one item.</p>
+
+    <form th:action="@{/suppliers/orders/save}" method="post">
+        <div class="form-group">
+            <label>Supplier</label>
+            <select name="supplierId" required>
+                <option value="">-- Select Supplier --</option>
+                <option th:each="s : ${suppliers}" th:value="${s.id}" th:text="${s.name}">Supplier</option>
+            </select>
+        </div>
+        <h3>Items</h3>
+        <table id="itemsTable">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <select class="product-select">
+                        <option value="">-- Select --</option>
+                        <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name + ' (' + p.code + ')'}">Product</option>
+                    </select>
+                </td>
+                <td><input type="number" name="qty" min="1" value="1" style="width: 80px;"></td>
+                <td><input type="number" name="unitPrice" step="0.01" min="0" placeholder="0.00" style="width: 100px;"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="addRow()" class="btn">Add row</button>
+        <input type="hidden" name="items" id="itemsInput">
+        <br><br>
+        <button type="submit" class="btn">Create Order</button>
+    </form>
+
+    <script th:inline="javascript">
+        function addRow() {
+            var tbody = document.querySelector('#itemsTable tbody');
+            var row = tbody.rows[0].cloneNode(true);
+            row.querySelector('input[name="qty"]').value = 1;
+            row.querySelector('input[name="unitPrice"]').value = '';
+            tbody.appendChild(row);
+        }
+        document.querySelector('form').addEventListener('submit', function() {
+            var parts = [];
+            document.querySelectorAll('#itemsTable tbody tr').forEach(function(tr) {
+                var sel = tr.querySelector('.product-select');
+                var qty = tr.querySelector('input[name="qty"]').value;
+                var price = tr.querySelector('input[name="unitPrice"]').value;
+                if (sel && sel.value && qty && price) {
+                    parts.push(sel.value + ':' + qty + ':' + price);
+                }
+            });
+            document.getElementById('itemsInput').value = parts.join(';');
+        });
+    </script>
+</section>
+</body>
+</html>

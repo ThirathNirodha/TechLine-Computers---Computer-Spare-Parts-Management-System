@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Purchase Orders - <span th:text="${supplier.name}">Supplier</span></h1>
+    <a href="/suppliers" class="btn">Back to Suppliers</a>
+    <a th:href="@{/suppliers/orders/new}" class="btn">New Purchase Order</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orders}">
+            <td th:text="${o.id}">-</td>
+            <td th:text="${o.orderDate != null ? #temporals.format(o.orderDate, 'yyyy-MM-dd') : '-'}">-</td>
+            <td th:text="${o.status}">-</td>
+            <td th:text="${o.totalAmount}">-</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(orders)}">No orders for this supplier.</p>
+</section>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Warranty &amp; Service Tracking</h1>
+    <a href="/warranty/tickets" class="btn">Service Tickets</a>
+    <a href="/warranty/tickets/new" class="btn">New Ticket</a>
+    <a href="/warranty/claims" class="btn">Warranty Claims</a>
+    <a href="/warranty/claims/new" class="btn">New Claim</a>
+
+    <h2>Recent Service Tickets</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${tickets}">
+            <td th:text="${t.id}">-</td>
+            <td th:text="${t.customer != null ? t.customer.name : '-'}">-</td>
+            <td th:text="${#strings.abbreviate(t.description, 50)}">-</td>
+            <td th:text="${t.status}">-</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Warranty Claims</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${claims}">
+            <td th:text="${c.id}">-</td>
+            <td th:text="${c.claimDate != null ? #temporals.format(c.claimDate, 'yyyy-MM-dd') : '-'}">-</td>
+            <td th:text="${c.status}">-</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

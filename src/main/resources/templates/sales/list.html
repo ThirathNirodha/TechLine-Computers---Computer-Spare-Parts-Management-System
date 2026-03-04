@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Order &amp; Sales</h1>
+    <a href="/sales/new" class="btn">New Sale</a>
+    <a href="/sales/report" class="btn">Daily Report</a>
+    <a href="/sales/customers" class="btn">Customers</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Sale #</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${sales}">
+            <td th:text="${s.id}">-</td>
+            <td th:text="${s.saleDate != null ? #temporals.format(s.saleDate, 'yyyy-MM-dd HH:mm') : '-'}">-</td>
+            <td th:text="${s.customer != null ? s.customer.name : 'Walk-in'}">-</td>
+            <td th:text="${s.totalAmount}">-</td>
+            <td>
+                <a th:href="@{/sales/view/{id}(id=${s.id})}" class="btn btn-small">View</a>
+                <a th:href="@{/sales/invoice/{id}/pdf(id=${s.id})}" class="btn btn-small">PDF</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(sales)}">No sales yet.</p>
+</section>
+</body>
+</html>

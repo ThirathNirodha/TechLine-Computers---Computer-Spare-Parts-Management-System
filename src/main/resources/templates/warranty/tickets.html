@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Service Tickets</h1>
+    <a href="/warranty" class="btn">Back</a>
+    <a href="/warranty/tickets/new" class="btn">New Ticket</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${tickets}">
+            <td th:text="${t.id}">-</td>
+            <td th:text="${t.customer != null ? t.customer.name : '-'}">-</td>
+            <td th:text="${#strings.abbreviate(t.description, 40)}">-</td>
+            <td th:text="${t.status}">-</td>
+            <td th:text="${t.createdAt != null ? #temporals.format(t.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
+            <td><a th:href="@{/warranty/tickets/edit/{id}(id=${t.id})}" class="btn btn-small">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

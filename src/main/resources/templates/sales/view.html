@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::section})}">
+<body>
+<section th:fragment="section">
+    <h1>Invoice #<span th:text="${sale.id}">-</span></h1>
+    <a href="/sales" class="btn">Back to Sales</a>
+    <a th:href="@{/sales/invoice/{id}/pdf(id=${sale.id})}" class="btn">Download PDF</a>
+
+    <p><strong>Date:</strong> <span th:text="${sale.saleDate != null ? #temporals.format(sale.saleDate, 'yyyy-MM-dd HH:mm') : '-'}">-</span></p>
+    <p th:if="${sale.customer != null}"><strong>Customer:</strong> <span th:text="${sale.customer.name}">-</span></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Code</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${sale.items}">
+            <td th:text="${item.product.name}">-</td>
+            <td th:text="${item.product.code}">-</td>
+            <td th:text="${item.quantity}">-</td>
+            <td th:text="${item.unitPrice}">-</td>
+            <td th:text="${item.totalPrice}">-</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><strong>Total: </strong><span th:text="${sale.totalAmount}">-</span></p>
+</section>
+</body>
+</html>
